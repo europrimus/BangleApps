@@ -1,0 +1,14 @@
+{ "id": "clkinfotimetrack",
+  "name": "clock info Time tracker",
+  "shortName":"Time tracker",
+  "version":"0.01",
+  "description": "Time tracker with task switched from clock info.",
+  "icon": "icon.webp",
+  "type": "clkinfo",
+  "tags": "clkinfo",
+  "supports" : ["BANGLEJS2"],
+  "readme": "README.md",
+  "storage": [
+    {"name":"clkinfotimetrack.clkinfo.js","url":"clkinfo.js"}
+  ]
+}
