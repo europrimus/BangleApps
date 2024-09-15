@@ -1,68 +1,67 @@
 (function() {
 
-  function clockInfoGet(item){
+  const imgIcon="MDCDAf//////////////////////////////////////////////////////////////////////////5JP////////////////////5JJJP///////////////////5JJJP///////////////////JJJJJ///////////////////JJJJJ///////////////////JJJJJ///////////////////JJJJJ///////////////////5JJJP///////////////////5JJJP////////////////////5JP////////wAAAAAAAP///////+AAB////wAAAAAAAB//////+AAAAB/////////////////+AB//+AB////////////////wB////+AP//////////////+AP/+B//wB//////////////+B//+B//+B//////////////wP//+B///wPwAAAAAAAP////wP//+B///wPwAAAAAAAB///+B///+B///+B////////////+B///+B///+B////////////+B///+B///+B////////////+B///+AB//+B////////////+B////+AB/+B////////////+B/////+B/+BwAAAAAAAP////wP///////wPwAAAAAAAB////wP///////wP/////////////+B//////+B//////////////+AP/////wB///////////////wB////+AP///////////////+AB//+AB/////////////////4AAAAB///wAAAAAAAP///////+AAB////wAAAAAAAB/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////w==";
+  const tasksTracked=[];
+  let currentTask="";
+
+  function clockInfoGet(taskName){
     return function(){
-        console.log(__FILE__,"Get",item.name);
+        console.log(__FILE__,"Get",taskName);
+        if(taskName != currentTask){
+          tasksTracked.push({
+            "task":taskName,
+            "time":Math.round(getTime())
+          })
+          currentTask=taskName;
+        };
         return {
-          text:item.text,
-          img : atob(item.img),
+          text:taskName,
+          img : atob(imgIcon),
         };
       };
   }
 
-  function clockInfoShow(item){
+  function clockInfoShow(taskName){
     return function(){
-        console.log(__FILE__,"Show",item.name);
+        console.log(__FILE__,"Show",taskName);
         // start time counter
         let startTime = getTime();
       };
   }
 
-  function clockInfoHide(item){
+  function clockInfoHide(taskName){
     return function(){
-        console.log(__FILE__,"Hide",item.name);
+        console.log(__FILE__,"Hide",taskName);
         // save elapsed time
         let endTime = getTime();
       };
   }
 
-  function clockInfoRun(item){
+  function clockInfoRun(taskName){
     return function(){
-        console.log(__FILE__,"Run",item.name);
+        console.log(__FILE__,"Run",taskName);
+        if(tasksTracked.length >= 1){
+          console.log(__FILE__,"Run",tasksTracked[tasksTracked.length].time - getTime());
+        }
         // pause/resume
       };
   }
 
-  function formatMenuItem(item){
+  function formatMenuItem(taskName){
     return{
-      name: item.name,
-      get:  clockInfoGet(item),
-      show: clockInfoShow(item),
-      hide: clockInfoHide(item),
-      run:  clockInfoRun(item)
+      name: taskName,
+      get:  clockInfoGet(taskName),
+      show: clockInfoShow(taskName),
+      hide: clockInfoHide(taskName),
+      run:  clockInfoRun(taskName)
     };
-  }
-
-  function readMenuData(){
-    menuData = [
-      {
-        name:"work",
-        text:"working",
-        img:"GBgB/////////4D//gD//n5//n5/wAADgAABnn55nn55nn55nn55nn55nn55nn55nn55nn55nn55nn55nn55gAADwAAD////////"
-      },{
-        name:"sleep",
-        text:"sleeping",
-        img:"GBgB/////H4/+Bgf84HP88PP88PPgAABgAABn+f5n+f5n+f5gAABgAAB5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn4AAH4AAH////"
-      }
-    ];
-    return menuData;
   }
 
   function getMenuItems(){
     let menuItems = [];
-    const menuData = readMenuData();
-    menuData.forEach(item => {
-      menuItems.push(formatMenuItem(item))
+    const taskList = require("Storage").readJSON("clkinfotimetrack.task.json",1)||[];
+    taskList.forEach(task => {
+      menuItems.push(formatMenuItem(task))
     });
     return menuItems;
   }
