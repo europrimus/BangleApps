@@ -85,18 +85,18 @@
 
   function formatElapsedSeconds(seconds) {
     interval = seconds / 86400; // 1d = 60s * 60m * 24h
-    if (interval > 1) {
-      return Math.floor(interval) + " d";
+    if (interval > 2) {
+      return Math.floor(interval) + "d";
     }
     interval = seconds / 3600; // 1h = 60s * 60m
-    if (interval > 1) {
-      return Math.floor(interval) + " h";
+    if (interval > 1.5) {
+      return Math.floor(interval) + "h";
     }
     interval = seconds / 60; // 1m = 60s
-    if (interval > 1) {
-      return Math.floor(interval) + " m";
+    if (interval > 1.5) {
+      return Math.floor(interval) + "m";
     }
-    return Math.floor(seconds) + " s";
+    return Math.floor(seconds) + "s";
   }
 
   function getMenuItems(){
