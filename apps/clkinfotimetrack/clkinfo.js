@@ -2,19 +2,28 @@
 
   const imgIcon="GBiBAAAAAAAAADwAADwAADwAADwAAAAD/AfgAAgQABAIABAL/BCIABDIABAL/BAIAAgQAAfgAAAD/AAAAAAAAAAAAAAAAAAAAAAAAA==";
   const tasksTracked=[];
+  const TimeTrackerLib = require("clkinfotimetrack");
   let currentTask="";
+
+  function switchTask(taskName){
+    if(taskName != currentTask){
+      tasksTracked.push({
+        "task":taskName,
+        "time":Math.round(getTime())
+      });
+      currentTask=taskName;
+      TimeTrackerLib.writeLog(tasksTracked);
+    }
+  }
 
   function clockInfoGet(taskName){
     return function(){
       console.log("timeTracker","Get",taskName);
       let elaspsedText="";
-      if(taskName != currentTask){
-        tasksTracked.push({
-          "task":taskName,
-          "time":Math.round(getTime())
-        });
-        currentTask=taskName;
-      }else if(tasksTracked.length >= 1){
+      if(
+        tasksTracked.length >= 1 &&
+        tasksTracked[tasksTracked.length - 1].task == taskName
+      ){
         let elaspsedTime=Math.round(getTime() - tasksTracked[tasksTracked.length - 1].time);
         elaspsedText=" "+formatElapsedSeconds(elaspsedTime);
         console.log("timeTracker","Get",elaspsedText);
@@ -41,8 +50,8 @@
   function clockInfoRun(taskName){
     return function(){
       console.log("timeTracker","Run",taskName);
+      switchTask(taskName);
       console.log("timeTracker","Run",tasksTracked);
-      // pause/resume ?
     };
   }
 
