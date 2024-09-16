@@ -1,17 +1,31 @@
 (function() {
 
   const imgIcon="Hh6BAAAAAAAAAAAB4AAAD8AAAD8AAAD8AAAD8AAAB4AAAADwP/AOcAAAYGAAAxjAAAhhP/BhhgABBggABAwgABgJv/AgBP/AwDAAAYGAAAOcAAADwf/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-  const tasksTracked=[];
   const TimeTrackerLib = require("clkinfotimetrack");
-  let currentTask="";
+  let tasksTracked=[];
+
+  function init(){
+    console.log("timeTracker","init");
+    tasksTracked=TimeTrackerLib.readLog();
+  }
+
+  function getCurrentTask(){
+    if(tasksTracked.length >= 1){
+      return tasksTracked[tasksTracked.length - 1];
+    }else{
+      return undefined;
+    }
+  }
 
   function switchTask(taskName){
-    if(taskName != currentTask){
+    if(
+      getCurrentTask() === undefined ||
+      taskName != getCurrentTask().name
+    ){
       tasksTracked.push({
         "task":taskName,
         "time":Math.round(getTime())
       });
-      currentTask=taskName;
       TimeTrackerLib.writeLog(tasksTracked);
     }
   }
@@ -19,17 +33,17 @@
   function clockInfoGet(taskName){
     return function(){
       console.log("timeTracker","Get",taskName);
-      let elaspsedText="";
+      let elapsedText="";
       if(
         tasksTracked.length >= 1 &&
-        tasksTracked[tasksTracked.length - 1].task == taskName
+        getCurrentTask().task == taskName
       ){
-        let elaspsedTime=Math.round(getTime() - tasksTracked[tasksTracked.length - 1].time);
-        elaspsedText=" "+formatElapsedSeconds(elaspsedTime);
-        console.log("timeTracker","Get",elaspsedText);
+        let elapsedTime=Math.round(getTime() - getCurrentTask().time);
+        elapsedText=" "+formatElapsedSeconds(elapsedTime);
+        console.log("timeTracker","Get",elapsedText);
       }
       return {
-        text: taskName+elaspsedText,
+        text: taskName+elapsedText,
         img: atob(imgIcon),
       };
     };
@@ -90,7 +104,7 @@
     return menuItems;
   }
 
-
+  init();
   return {
     name: "timeTracker",
     items: getMenuItems()

@@ -4,14 +4,17 @@ exports = {
     readLog: function(){
         // open StorageFile
         const dataCSV = require("Storage").read(this.logFile);
-        const tasksTracked = this.csvJSON(dataCSV);
-        console.log("timeTracker","readLog",dataCSV,"<==",this.logFile);
+        let tasksTracked = [];
+        if(dataCSV){
+            tasksTracked = this.csvJSON(dataCSV);
+            console.log("timeTracker","readLog",dataCSV,"<==",this.logFile);
+        }
         return tasksTracked;
     },
 
     writeLog: function(taskJson){
         const dataCSV = this.jsonCSV(taskJson);
-        require("Storage").open(this.logFile, "w").write(dataCSV);
+        require("Storage").write(this.logFile, dataCSV);
         console.log("timeTracker","writeLog",dataCSV,"==>",this.logFile);
     },
 
