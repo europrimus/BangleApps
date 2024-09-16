@@ -13,6 +13,9 @@
     {"name":"clkinfotimetrack.task.json", "url":"task.json"},
     {"name":"clkinfotimetrack", "url":"lib.js"}
   ],
+  "data": [
+    {"name": "clkinfotimetrack.log.csv"}
+  ],
   "screenshots": [
     {"url": "screenshot_work.png"}
   ]
