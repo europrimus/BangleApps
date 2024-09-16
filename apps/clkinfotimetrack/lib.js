@@ -24,17 +24,22 @@ exports = {
         var result = [];
         lines.forEach(line => {
             var data=line.split(",");
-            // TODO: check if data and if string and digit
-            result.push({
-                "task":data[0],
-                "time":data[1]
-            });
+            // check if data and if string and digit
+            if(
+                data[0] &&
+                parseInt(data[1]) !== Number.NaN
+            ){
+                result.push({
+                    "task":data[0],
+                    "time":parseInt(data[1])
+                });
+            }
         });
-        return JSON.stringify(result);
+        return result;
     },
 
     jsonCSV: function (json){
-        var result = "";
+        var result = "taskName,startTime";
         json.forEach(line => {
             result = result.concat('\n', line.task+","+line.time);
         });

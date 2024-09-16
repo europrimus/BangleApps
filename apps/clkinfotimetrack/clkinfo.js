@@ -1,6 +1,7 @@
 (function() {
 
-  const imgIcon="Hh6BAAAAAAAAAAAB4AAAD8AAAD8AAAD8AAAD8AAAB4AAAADwP/AOcAAAYGAAAxjAAAhhP/BhhgABBggABAwgABgJv/AgBP/AwDAAAYGAAAOcAAADwf/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+  const imgIcon=require("heatshrink").decompress(atob("j0ewIif+E/+EOuAGBsFggEDjHAgEIsIOBsOGgEBg0IgEEhkggEYhO/+Eggn/4HAmASBwOAEIOcFAMD4IOBKLoA=="));
+  const imgIconRecording=require("heatshrink").decompress(atob("j0ewYaXgmSBREJkmQBQ8CpMkCxGSpIKIkmSoAKHgMkwBFK//wgED/4ABAoMAh/4j4FCAAkfEIICCAAk/gF+gH8BQsOCgUHFgoIC8EB/AVEg5QBBAIaBLInAIgPAgY4FGoIUBg/jFggRDDQIKCI4QCCgZlGIIICDMo3gv47BBY4jBg4sFAH4AYA=="));
   const TimeTrackerLib = require("clkinfotimetrack");
   let tasksTracked=[];
 
@@ -18,6 +19,7 @@
   }
 
   function switchTask(taskName){
+    console.log("timeTracker","switchTask",taskName,tasksTracked);
     if(
       getCurrentTask() === undefined ||
       taskName != getCurrentTask().name
@@ -34,17 +36,19 @@
     return function(){
       console.log("timeTracker","Get",taskName);
       let elapsedText="";
+      let icon=imgIcon;
       if(
         tasksTracked.length >= 1 &&
         getCurrentTask().task == taskName
       ){
         let elapsedTime=Math.round(getTime() - getCurrentTask().time);
         elapsedText=" "+formatElapsedSeconds(elapsedTime);
+        icon=imgIconRecording;
         console.log("timeTracker","Get",elapsedText);
       }
       return {
         text: taskName+elapsedText,
-        img: atob(imgIcon),
+        img: icon,
       };
     };
   }
