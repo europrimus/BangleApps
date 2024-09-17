@@ -17,6 +17,7 @@
     {"name": "clkinfotimetrack.log.csv"}
   ],
   "screenshots": [
-    {"url": "screenshot_work.png"}
+    {"url": "screenshot_sport_inactive.png"},
+    {"url": "screenshot_work_active.png"}
   ]
 }
