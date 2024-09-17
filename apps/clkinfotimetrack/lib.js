@@ -25,13 +25,14 @@ exports = {
         lines.forEach(line => {
             var data=line.split(",");
             // check if data and if string and digit
+            const startTime = parseInt(data[1]);
             if(
                 data[0] &&
-                parseInt(data[1]) !== Number.NaN
+                ! isNaN(startTime)
             ){
                 result.push({
                     "task":data[0],
-                    "time":parseInt(data[1])
+                    "time":startTime
                 });
             }
         });
