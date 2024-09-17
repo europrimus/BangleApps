@@ -2,19 +2,24 @@
 
 A time tracker with task switched from clock info.
 
-Add screen shots (if possible) to the app folder and link then  into this file with ![](<name>.png)
+![inactive task](screenshot_sport_inactive.png)
+
+Active task avec a red dot in icon and display elapsed time.
+![active task](screenshot_work_active.png)
 
 ## Usage
 
-Simply switch task in your clock info.
-
-## Features
-
-Sum time elapsed on each task per day.
+Simply choose task in your clock info by swipe up or down and validate by a tap.
 
 ## Controls
 
-Switch up or down to change task.
+Swipe up or down to change task.
+Validate by a tap.
+
+## Todo
+
+- Add interface for viewing data and define task list.
+- Rotate task log.
 
 ## Requests
 
