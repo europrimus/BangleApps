@@ -18,6 +18,15 @@
     }
   }
 
+  function getCurrentItems(){
+    for(let index=0; index<clockInfo.items.length; index++) {
+      console.debug("timeTracker","getCurrentItems",index,clockInfo.items[index].name);
+      if(clockInfo.items[index].uses == 1){
+        return index;
+      }
+    }
+  }
+
   function switchTask(taskName){
     console.log("timeTracker","switchTask",taskName,tasksTracked);
     if(
@@ -29,6 +38,7 @@
         "time":Math.round(getTime())
       });
       TimeTrackerLib.writeLog(tasksTracked);
+      clockInfo.items[getCurrentItems()].emit('redraw');
     }
   }
 
@@ -109,8 +119,9 @@
   }
 
   init();
-  return {
+  let clockInfo = {
     name: "timeTracker",
     items: getMenuItems()
   };
+  return clockInfo;
 })
