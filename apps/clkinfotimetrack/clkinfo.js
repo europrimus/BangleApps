@@ -4,10 +4,15 @@
   const imgIconRecording=require("heatshrink").decompress(atob("j0ewYaXgmSBREJkmQBQ8CpMkCxGSpIKIkmSoAKHgMkwBFK//wgED/4ABAoMAh/4j4FCAAkfEIICCAAk/gF+gH8BQsOCgUHFgoIC8EB/AVEg5QBBAIaBLInAIgPAgY4FGoIUBg/jFggRDDQIKCI4QCCgZlGIIICDMo3gv47BBY4jBg4sFAH4AYA=="));
   const TimeTrackerLib = require("clkinfotimetrack");
   let tasksTracked=[];
+  let clockInfo = {};
 
   function init(){
     console.log("timeTracker","init");
     tasksTracked=TimeTrackerLib.readLog();
+    clockInfo = {
+      name: "timeTracker",
+      items: getMenuItems()
+    };
   }
 
   function getCurrentTask(){
@@ -119,9 +124,5 @@
   }
 
   init();
-  let clockInfo = {
-    name: "timeTracker",
-    items: getMenuItems()
-  };
   return clockInfo;
 })
