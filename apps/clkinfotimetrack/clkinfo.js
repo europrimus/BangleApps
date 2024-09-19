@@ -5,9 +5,10 @@
   const TimeTrackerLib = require("clkinfotimetrack");
   let tasksTracked=[];
   let clockInfo = {};
+  const debug=false;
 
   function init(){
-    console.log("timeTracker","init");
+    if(debug) console.log("timeTracker","init");
     tasksTracked=TimeTrackerLib.readLog();
     clockInfo = {
       name: "timeTracker",
@@ -25,7 +26,7 @@
 
   function getCurrentItems(){
     for(let index=0; index<clockInfo.items.length; index++) {
-      console.debug("timeTracker","getCurrentItems",index,clockInfo.items[index].name);
+      if(debug) console.debug("timeTracker","getCurrentItems",index,clockInfo.items[index].name);
       if(clockInfo.items[index].uses == 1){
         return index;
       }
@@ -33,7 +34,7 @@
   }
 
   function switchTask(taskName){
-    console.log("timeTracker","switchTask",taskName,tasksTracked);
+    if(debug) console.log("timeTracker","switchTask",taskName,getCurrentTask());
     if(
       getCurrentTask() === undefined ||
       taskName != getCurrentTask().task
@@ -49,7 +50,7 @@
 
   function clockInfoGet(taskName){
     return function(){
-      console.log("timeTracker","Get",taskName);
+      if(debug) console.log("timeTracker","Get",taskName);
       let elapsedText="";
       let icon=imgIcon;
       if(
@@ -59,7 +60,7 @@
         let elapsedTime=Math.round(getTime() - getCurrentTask().time);
         elapsedText=" "+formatElapsedSeconds(elapsedTime);
         icon=imgIconRecording;
-        console.log("timeTracker","Get",elapsedText);
+        if(debug) console.log("timeTracker","Get",elapsedText);
       }
       return {
         text: taskName+elapsedText,
@@ -70,21 +71,27 @@
 
   function clockInfoShow(taskName){
     return function(){
-      console.log("timeTracker","Show",taskName);
+      if(debug)  console.log("timeTracker","Show",taskName,this);
     };
   }
 
   function clockInfoHide(taskName){
     return function(){
-      console.log("timeTracker","Hide",taskName);
+      if(debug)  console.log("timeTracker","Hide",taskName,this);
+    };
+  }
+
+  function clockInfoBlur(taskName){
+    return function(){
+      if(debug)  console.log("timeTracker","blur",taskName,this);
     };
   }
 
   function clockInfoRun(taskName){
     return function(){
-      console.log("timeTracker","Run",taskName);
+      if(debug)  console.log("timeTracker","Run",taskName,this);
       switchTask(taskName);
-      console.log("timeTracker","Run",tasksTracked);
+      if(debug) console.log("timeTracker","Run",tasksTracked.slice(-3));
     };
   }
 
@@ -94,7 +101,8 @@
       get:  clockInfoGet(taskName),
       show: clockInfoShow(taskName),
       hide: clockInfoHide(taskName),
-      run:  clockInfoRun(taskName)
+      run:  clockInfoRun(taskName),
+      blur: clockInfoBlur(taskName)
     };
   }
 

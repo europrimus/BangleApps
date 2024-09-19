@@ -7,7 +7,7 @@ exports = {
         let tasksTracked = [];
         if(dataCSV){
             tasksTracked = this.csvJSON(dataCSV);
-            console.log("timeTracker","readLog",dataCSV,"<==",this.logFile);
+            if(debug) console.log("timeTracker","readLog",dataCSV,"<==",this.logFile);
         }
         return tasksTracked;
     },
@@ -15,7 +15,7 @@ exports = {
     writeLog: function(taskJson){
         const dataCSV = this.jsonCSV(taskJson);
         require("Storage").write(this.logFile, dataCSV);
-        console.log("timeTracker","writeLog",dataCSV,"==>",this.logFile);
+        if(debug) console.log("timeTracker","writeLog",dataCSV,"==>",this.logFile);
     },
 
     csvJSON: function (csv){
