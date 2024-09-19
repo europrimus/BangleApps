@@ -36,7 +36,7 @@
     console.log("timeTracker","switchTask",taskName,tasksTracked);
     if(
       getCurrentTask() === undefined ||
-      taskName != getCurrentTask().name
+      taskName != getCurrentTask().task
     ){
       tasksTracked.push({
         "task":taskName,
