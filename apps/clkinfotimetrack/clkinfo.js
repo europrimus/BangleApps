@@ -124,7 +124,7 @@
 
   function getMenuItems(){
     let menuItems = [];
-    const taskList = require("Storage").readJSON("clkinfotimetrack.task.json",1)||[];
+    const taskList = require("Storage").readJSON("clkinfotimetrack.conf.json",1)||[];
     taskList.forEach(task => {
       menuItems.push(formatMenuItem(task));
     });

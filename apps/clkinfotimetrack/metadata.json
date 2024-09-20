@@ -6,11 +6,12 @@
   "icon": "icon.webp",
   "type": "clkinfo",
   "tags": "clkinfo",
+  "dependencies" : { "clock_info":"module" },
   "supports" : ["BANGLEJS2"],
   "readme": "README.md",
   "storage": [
     {"name":"clkinfotimetrack.clkinfo.js","url":"clkinfo.js"},
-    {"name":"clkinfotimetrack.task.json", "url":"task.json"},
+    {"name":"clkinfotimetrack.conf.json", "url":"config.json"},
     {"name":"clkinfotimetrack", "url":"lib.js"}
   ],
   "data": [
