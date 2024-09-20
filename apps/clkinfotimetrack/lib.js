@@ -1,6 +1,7 @@
 exports = {
     logFile: "clkinfotimetrack.log.csv",
     confFile:"clkinfotimetrack.conf.json",
+    debug:false,
 
     readLog: function(){
         // open StorageFile
@@ -8,7 +9,7 @@ exports = {
         let tasksTracked = [];
         if(dataCSV){
             tasksTracked = this.csvJSON(dataCSV);
-            if(debug) console.log("timeTracker","readLog",dataCSV,"<==",this.logFile);
+            if(this.debug) console.log("timeTracker","readLog",dataCSV,"<==",this.logFile);
         }
         return tasksTracked;
     },
@@ -16,7 +17,7 @@ exports = {
     writeLog: function(taskJson){
         const dataCSV = this.jsonCSV(taskJson);
         require("Storage").write(this.logFile, dataCSV);
-        if(debug) console.log("timeTracker","writeLog",dataCSV,"==>",this.logFile);
+        if(this.debug) console.log("timeTracker","writeLog",dataCSV,"==>",this.logFile);
     },
 
     csvJSON: function (csv){
@@ -59,6 +60,7 @@ exports = {
     },
 
     isDebug: function(){
-        return require("Storage").readJSON(this.confFile,1).debug || false;
+        this.debug=require("Storage").readJSON(this.confFile,1).debug || false;
+        return this.debug;
     }
 };
