@@ -5,7 +5,7 @@
   const TimeTrackerLib = require("clkinfotimetrack");
   let tasksTracked=[];
   let clockInfo = {};
-  const debug=false;
+  const debug=TimeTrackerLib.isDebug();
 
   function init(){
     if(debug) console.log("timeTracker","init");
@@ -124,7 +124,7 @@
 
   function getMenuItems(){
     let menuItems = [];
-    const taskList = require("Storage").readJSON("clkinfotimetrack.conf.json",1)||[];
+    const taskList = TimeTrackerLib.readTaskNames();
     taskList.forEach(task => {
       menuItems.push(formatMenuItem(task));
     });

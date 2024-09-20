@@ -1,5 +1,6 @@
 exports = {
     logFile: "clkinfotimetrack.log.csv",
+    confFile:"clkinfotimetrack.conf.json",
 
     readLog: function(){
         // open StorageFile
@@ -45,5 +46,19 @@ exports = {
             result = result.concat('\n', line.task+","+line.time);
         });
         return result;
+    },
+
+    readTaskNames: function(){
+        return require("Storage").readJSON(confFile,1).taskName || [];
+    },
+
+    writeTaskNames: function(taskNames){
+        let conf = require("Storage").readJSON(confFile,1) || {"taskName":[],"debug":false};
+        conf.taskName = taskNames;
+        require("Storage").writeJSON(confFile,conf);
+    },
+
+    isDebug: function(){
+        return require("Storage").readJSON(confFile,1).debug || false;
     }
 };

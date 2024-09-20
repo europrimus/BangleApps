@@ -1,7 +1,10 @@
-[
+{
+  "taskName":[
     "work",
     "sleep",
     "cook",
     "sport",
     "family"
-]
+  ],
+  "debug":false
+}
