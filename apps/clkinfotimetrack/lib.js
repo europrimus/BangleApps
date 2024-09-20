@@ -49,16 +49,16 @@ exports = {
     },
 
     readTaskNames: function(){
-        return require("Storage").readJSON(confFile,1).taskName || [];
+        return require("Storage").readJSON(this.confFile,1).taskName || [];
     },
 
     writeTaskNames: function(taskNames){
-        let conf = require("Storage").readJSON(confFile,1) || {"taskName":[],"debug":false};
+        let conf = require("Storage").readJSON(this.confFile,1) || {"taskName":[],"debug":false};
         conf.taskName = taskNames;
-        require("Storage").writeJSON(confFile,conf);
+        require("Storage").writeJSON(this.confFile,conf);
     },
 
     isDebug: function(){
-        return require("Storage").readJSON(confFile,1).debug || false;
+        return require("Storage").readJSON(this.confFile,1).debug || false;
     }
 };
