@@ -9,6 +9,7 @@
   "dependencies" : { "clock_info":"module" },
   "supports" : ["BANGLEJS2"],
   "readme": "README.md",
+  "interface": "interface.html",
   "storage": [
     {"name":"clkinfotimetrack.clkinfo.js","url":"clkinfo.js"},
     {"name":"clkinfotimetrack.conf.json", "url":"config.json"},
