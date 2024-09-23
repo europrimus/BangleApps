@@ -31,6 +31,7 @@
         const logFile= "clkinfotimetrack.log.csv";
 
         function getData() {
+            console.debug("getData","start");
             const dataElement = document.getElementById("data");
             let csvData = "";
             // show loading window
@@ -38,6 +39,7 @@
             // get the data
             dataElement.innerHTML = "";
             Util.readStorageFile( logFile, data => {
+                console.debug("getData", data);
                 csvData = data.trim();
                 // remove window
                 Util.hideModal();
@@ -52,12 +54,14 @@
         }
 
         function getConf(){
+            console.debug("getConf","start");
             const ConfigElement = document.getElementById("config");
             // show loading window
             Util.showModal("Loading...");
             // get the config
             ConfigElement.innerHTML = "";
             Util.readStorageFile(confFile, configData => {
+                console.debug("getConf", configData);
                 // remove window
                 Util.hideModal();
                 // If no config, report it and exit
