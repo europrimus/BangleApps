@@ -26,73 +26,7 @@
     <button class="btn btn-default" id="btnDataDownload">Download</button>
 
     <script src="../../core/lib/interface.js"></script>
-    <script>
-        const confFile= "clkinfotimetrack.conf.json";
-        const logFile= "clkinfotimetrack.log.csv";
-
-        function getData() {
-            console.debug("getData","start");
-            const dataElement = document.getElementById("data");
-            let csvData = "";
-            // show loading window
-            Util.showModal("Loading...");
-            // get the data
-            dataElement.innerHTML = "";
-            Util.readStorageFile( logFile, data => {
-                console.debug("getData", data);
-                csvData = data.trim();
-                // remove window
-                Util.hideModal();
-                // If no data, report it and exit
-                if (data.length == 0) {
-                    dataElement.innerHTML = "<b>No data found</b>";
-                    return;
-                }
-                // Otherwise parse the data and output it as a table
-                dataElement.innerHTML = '<pre>'+csvData+'</pre>';
-            });
-        }
-
-        function getConf(){
-            console.debug("getConf","start");
-            const ConfigElement = document.getElementById("config");
-            // show loading window
-            Util.showModal("Loading...");
-            // get the config
-            ConfigElement.innerHTML = "";
-            Util.readStorageFile(confFile, configData => {
-                console.debug("getConf", configData);
-                // remove window
-                Util.hideModal();
-                // If no config, report it and exit
-                if (configData.length == 0) {
-                    ConfigElement.innerHTML = "<b>No config found</b>";
-                    return;
-                }
-                configJson = JSON.parse(configData);
-                // Otherwise parse the config and output it as a table
-                ConfigElement.innerHTML = `
-<dl>
-    <dt> Debug</dt>
-    <dd>`+ configJson.debug ? "true" : "false" +`</dd>
-</dl>
-`;
-                ConfigElement.innerHTML += `Tasks : \n<ul>\n`;
-                configJson.taskName.forEach(task =>{
-                    ConfigElement.innerHTML +=`\n<li>`+task+`</li>\n`;
-                });
-                ConfigElement.innerHTML += `</ul>\n`;
-            });
-
-        }
-
-        // Called when app starts
-        function onInit() {
-            getConf();
-            getData();
-        }
-
-    </script>
+    <script src="interface.js"></script>
 </body>
 
 </html>
