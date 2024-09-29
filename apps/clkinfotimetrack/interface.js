@@ -2,7 +2,7 @@ const confFile= "clkinfotimetrack.conf.json";
 const logFile= "clkinfotimetrack.log.csv";
 
 function getData() {
-    console.debug("getData","start");
+    logToHtml("getData","start");
     const dataElement = document.getElementById("data");
     let csvData = "";
     // show loading window
@@ -10,7 +10,7 @@ function getData() {
     // get the data
     dataElement.innerHTML = "";
     Util.readStorageFile( logFile, data => {
-        console.debug("getData", data);
+        logToHtml("getData", data);
         csvData = data.trim();
         // remove window
         Util.hideModal();
@@ -25,20 +25,20 @@ function getData() {
 }
 
 function getConf(){
-    console.debug("getConf","start");
+    logToHtml("getConf","start");
     const ConfigElement = document.getElementById("config");
     // show loading window
     Util.showModal("Loading config...");
     // get the config
     ConfigElement.innerHTML = "";
     Util.readStorageJSON(confFile, config => {
-        console.debug("getConf", config);
+        logToHtml("getConf", config);
         // remove window
         Util.hideModal();
         // If no config, report it and exit
         if (config == undefined) {
             config = { "taskName": [], "debug": false };
-            console.debug("getConf", "no config found");
+            logToHtml("getConf", "no config found");
         }
         // Otherwise parse the config and output it as a table
         ConfigElement.innerHTML = `
@@ -54,6 +54,11 @@ function getConf(){
         ConfigElement.innerHTML += `</ul>\n`;
     });
 
+}
+
+function logToHtml(msg){
+    let logContent = document.getElementById("log").innerText;
+    document.getElementById("log").innerText=logContent.concat(msg+"\n");
 }
 
 // Called when app starts
