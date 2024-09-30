@@ -33,15 +33,15 @@ function genConfNode(confNode,key,val){
     let valNode=document.createElement('dd');
     switch (typeof val) {
     case "boolean":
-        valNode.appendChild(genInputOnOff(val));
+        valNode.appendChild(genInputOnOff(key, val));
         break;
     case "object":
         if(Array.isArray(val)){
             let listNode = document.createElement("ul");
             val.forEach(value=>{
-                genListInput(listNode,value);
+                if(value){genListInput(listNode,key,value);};
             })
-            genListInput(listNode);
+            genListInput(listNode, key);
             valNode.appendChild(listNode);
         }
         break;
@@ -52,34 +52,32 @@ function genConfNode(confNode,key,val){
     return confNode;
 }
 
-function genListInput(listNode,value=""){
+function genListInput(listNode,name, value=""){
     let ListElementNode = document.createElement("li");
     ListElementNode.classList.add("no-bullet");
-    ListElementNode.appendChild(genInputText(value));
+    ListElementNode.appendChild(genInputText(name, value));
     listNode.appendChild(ListElementNode);
     return listNode;
 }
 
-function genInputText(val){
+function genInputText(name, val){
     const inputText = document.createElement('input');
     inputText.type = "text";
+    inputText.name = name;
     inputText.classList.add('conf-input');
     inputText.classList.add('form-input');
     inputText.maxLength=10;
     inputText.value = (val?.substring(0, inputText.maxLength) || "");
-    inputText.onchange = (e => {
-      save();
-    });
+    inputText.onchange = save;
     return inputText;
 }
 
-function genInputOnOff(bool){
+function genInputOnOff(name, bool){
     const onOffCheck = document.createElement('input');
     onOffCheck.type = 'checkbox';
     onOffCheck.checked = bool;
-    onOffCheck.onchange = e => {
-      save();
-    };
+    onOffCheck.name = name;
+    onOffCheck.onchange = save;
     const onOffIcon = document.createElement('i');
     onOffIcon.classList.add('form-icon');
     const onOff = document.createElement('label');
@@ -90,8 +88,29 @@ function genInputOnOff(bool){
 }
 
 function save(){
-    // TODO: save data to config
-    console.log("save");
+    console.log("<ClockInfoTimeTracker>","save");
+    let config = TimeTrackerLib.defaultConf();
+    let inputFields=document.getElementsByTagName("input");
+    for(let i = 0; i < inputFields.length; i++){
+        const key = inputFields[i].name;
+        const val = inputFields[i].value;
+        switch (typeof config[key]) {
+        case "boolean":
+            config[key]=inputFields[i].checked;
+            break;
+        case "object":
+            config[key].push(inputFields[i].value);
+            break;
+        default:
+            console.warn("<ClockInfoTimeTracker>","save","unknown type of key",key,"not saved");
+        };
+    };
+    console.log("<ClockInfoTimeTracker>","save","end config",config);
+    Util.showModal("Save config...");
+    Util.writeStorage(TimeTrackerLib.confFile(),JSON.stringify(config),args => {
+        Util.hideModal();
+        getConf();
+    })
 }
 
 // Called when app starts
