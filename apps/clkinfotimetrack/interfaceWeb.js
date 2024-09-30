@@ -2,20 +2,20 @@ const TimeTrackerLib=exports;
 delete exports;
 
 async function getConf(){
-    logToHtml("getConf","start");
+    console.log("<ClockInfoTimeTracker>","getConf","start");
     const ConfigElement = document.getElementById("config");
     // show loading window
     Util.showModal("Loading config...");
     // get the config
     ConfigElement.innerHTML = "";
     return Util.readStorageJSON(TimeTrackerLib.confFile, config => {
-        logToHtml("getConf", config);
+        console.log("getConf", config);
         // remove window
         Util.hideModal();
         // If no config, report it and exit
         if (config == undefined) {
             config = { "taskName": [], "debug": false };
-            logToHtml("getConf", "no config found");
+            console.log("getConf", "no config found");
         }
         // Otherwise parse the config and output it as a table
         let confNode = document.createElement('dl');
@@ -23,6 +23,7 @@ async function getConf(){
             genConfNode(confNode,key,config[key]);
         }
         ConfigElement.appendChild(confNode);
+        console.log("<ClockInfoTimeTracker>","getConf", "end display config");
     });
 }
 
@@ -91,20 +92,14 @@ function genInputOnOff(bool){
 
 function save(){
     // TODO: save data to config
-    logToHtml("save");
-}
-
-function logToHtml(...msgs){
-    let logContent = document.getElementById("log").innerText;
-    document.getElementById("log").innerText=logContent.concat(msgs.join(" ")+"\n");
+    console.log("save");
 }
 
 // Called when app starts
 function onInit() {
     getConf()
-    .catch((reason) => {logToHtml("getConf", reason)})
+    .catch((reason) => {console.log("<ClockInfoTimeTracker>","getConf", reason)})
     .finally(()=>{
-        logToHtml("getConf","End")
-    }
-    )
+        console.log("<ClockInfoTimeTracker>","getConf","End")
+    })
 }
