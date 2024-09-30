@@ -1,23 +1,27 @@
 exports = {
-    logFile: "clkinfotimetrack.log.csv",
-    confFile:"clkinfotimetrack.conf.json",
+    logFile: function(){return "clkinfotimetrack.log.csv"},
+    confFile:function(){return "clkinfotimetrack.conf.json"},
     debug:false,
+
+    defaultConf: function(){
+        return {"taskName":[],"debug":false}
+    },
 
     readLog: function(){
         // open StorageFile
-        const dataCSV = require("Storage").read(this.logFile);
+        const dataCSV = require("Storage").read(this.logFile());
         let tasksTracked = [];
         if(dataCSV){
             tasksTracked = this.csvJSON(dataCSV);
-            if(this.debug) console.log("timeTracker","readLog",dataCSV,"<==",this.logFile);
+            if(this.debug) console.log("timeTracker","readLog",dataCSV,"<==",this.logFile());
         }
         return tasksTracked;
     },
 
     writeLog: function(taskJson){
         const dataCSV = this.jsonCSV(taskJson);
-        require("Storage").write(this.logFile, dataCSV);
-        if(this.debug) console.log("timeTracker","writeLog",dataCSV,"==>",this.logFile);
+        require("Storage").write(this.logFile(), dataCSV);
+        if(this.debug) console.log("timeTracker","writeLog",dataCSV,"==>",this.logFile());
     },
 
     csvJSON: function (csv){
@@ -50,17 +54,17 @@ exports = {
     },
 
     readTaskNames: function(){
-        return require("Storage").readJSON(this.confFile,1).taskName || [];
+        return require("Storage").readJSON(this.confFile(),1).taskName || [];
     },
 
     writeTaskNames: function(taskNames){
-        let conf = require("Storage").readJSON(this.confFile,1) || {"taskName":[],"debug":false};
+        let conf = require("Storage").readJSON(this.confFile(),1) || self.defaultConf();
         conf.taskName = taskNames;
-        require("Storage").writeJSON(this.confFile,conf);
+        require("Storage").writeJSON(this.confFile(),conf);
     },
 
     isDebug: function(){
-        this.debug=require("Storage").readJSON(this.confFile,1).debug || false;
+        this.debug=require("Storage").readJSON(this.confFile(),1).debug || false;
         return this.debug;
     }
 };

@@ -6,15 +6,14 @@ async function getConf(){
     const ConfigElement = document.getElementById("config");
     // show loading window
     Util.showModal("Loading config...");
-    // get the config
     ConfigElement.innerHTML = "";
-    return Util.readStorageJSON(TimeTrackerLib.confFile, config => {
+    return Util.readStorageJSON(TimeTrackerLib.confFile(), config => {
         console.log("getConf", config);
         // remove window
         Util.hideModal();
         // If no config, report it and exit
         if (config == undefined) {
-            config = { "taskName": [], "debug": false };
+            config = TimeTrackerLib.defaultConf();
             console.log("getConf", "no config found");
         }
         // Otherwise parse the config and output it as a table
