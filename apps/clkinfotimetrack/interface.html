@@ -2,25 +2,11 @@
 
 <head>
     <link rel="stylesheet" href="../../css/spectre.min.css">
+    <link rel="stylesheet" href="interfaceWeb.css">
 </head>
 
 <body>
-    <div id="config" class="container">
-        <form class="form-horizontal">
-            <div class="form-group">
-                <div class="col-sm-12">
-                    <label class="form-label"><b>Debug</b></label>
-                    <label class="form-switch"><input type="checkbox"><i class="form-icon"></i></label>
-                </div>
-                <div class="col-mx-auto">
-                    <button class="btn tooltip btn-error" data-tooltip="delete old files" task="delBefore">
-                        <i class="icon icon-delete"></i>
-                    </button>
-                </div>
-            </div>
-        </form>
-    </div>
-    <button class="btn btn-default" id="btnConfigSave">Save</button>
+    <div id="config" class="container"></div>
 
     <div id="data"></div>
     <button class="btn btn-default" id="btnDataDownload">Download</button>
@@ -31,7 +17,8 @@
     </details>
 
     <script src="../../core/lib/interface.js"></script>
-    <script src="interface.js"></script>
+    <script src="lib.js"></script>
+    <script src="interfaceWeb.js"></script>
 </body>
 
 </html>
