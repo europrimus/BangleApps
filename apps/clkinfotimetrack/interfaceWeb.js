@@ -8,13 +8,13 @@ async function getConf(){
     Util.showModal("Loading config...");
     ConfigElement.innerHTML = "";
     return Util.readStorageJSON(TimeTrackerLib.confFile(), config => {
-        console.log("getConf", config);
+        console.log("<ClockInfoTimeTracker>","getConf", config);
         // remove window
         Util.hideModal();
         // If no config, report it and exit
         if (config == undefined) {
             config = TimeTrackerLib.defaultConf();
-            console.log("getConf", "no config found");
+            console.log("<ClockInfoTimeTracker>","getConf", "no config found");
         }
         // Otherwise parse the config and output it as a table
         let confNode = document.createElement('dl');
