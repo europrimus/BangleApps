@@ -6,7 +6,6 @@
   "icon": "icon.webp",
   "type": "clkinfo",
   "tags": "clkinfo",
-  "dependencies" : { "clock_info":"module" },
   "supports" : ["BANGLEJS2"],
   "readme": "README.md",
   "interface": "interface.html",
