@@ -1,7 +1,7 @@
 { "id": "clkinfotimetrack",
   "name": "clock info Time tracker",
   "shortName":"Time tracker",
-  "version":"0.04",
+  "version":"0.05",
   "description": "Time tracker with task switched from clock info.",
   "icon": "icon.webp",
   "type": "clkinfo",
