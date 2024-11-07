@@ -106,7 +106,9 @@ function save(){
             config[key]=inputFields[i].checked;
             break;
         case "object":
-            config[key].push(inputFields[i].value);
+            if(inputFields[i].value.length > 0){
+                config[key].push(inputFields[i].value);
+            }
             break;
         default:
             console.warn("<ClockInfoTimeTracker>","save","unknown type of key",key,"not saved");
