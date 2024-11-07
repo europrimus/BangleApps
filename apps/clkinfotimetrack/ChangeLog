@@ -3,3 +3,4 @@
 0.03: Multiple tap on task don't add multiple task any more
 0.04: prepare for config interface
 0.05: now config could be changed from interface
+0.06: now tasks log could be view in web interface
