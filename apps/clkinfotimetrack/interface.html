@@ -6,10 +6,16 @@
 </head>
 
 <body>
-    <div id="config" class="container"></div>
+    <details open>
+        <summary><h3>Config</h3></summary>
+        <div id="config" class="container"></div>
+    </details>
 
-    <div id="data"></div>
-    <button class="btn btn-default" id="btnDataDownload">Download</button>
+    <details>
+        <summary><h3>Tasks log</h3></summary>
+        <div id="data"></div>
+        <button class="btn btn-default" id="btnLoadLogData" disabled="disabled">Load log</button>
+    </details>
 
     <script src="../../core/lib/interface.js"></script>
     <script src="lib.js"></script>

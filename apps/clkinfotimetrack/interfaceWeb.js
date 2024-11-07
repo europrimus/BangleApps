@@ -2,12 +2,74 @@ const TimeTrackerLib=exports;
 delete exports;
 
 function bluetoothCommunicationInProgress(message){
+    disableLoadLogDataBtn();
     // show loading window
     Util.showModal(message);
 }
 
 function bluetoothCommunicationEnded(){
     Util.hideModal();
+    enableLoadLogDataBtn();
+}
+
+async function getLogData() {
+    console.log("<ClockInfoTimeTracker>","getLogData","start");
+    const dataElement = document.getElementById("data");
+    bluetoothCommunicationInProgress("Loading data...");
+    // get the data
+    dataElement.innerHTML = "";
+    return Util.readStorage( TimeTrackerLib.logFile(), data => {
+        console.log("<ClockInfoTimeTracker>","getLogData","data length", data.length);
+        // remove window
+        tasksTracked = TimeTrackerLib.csvJSON(data);
+        console.log("<ClockInfoTimeTracker>","getLogData","tasksTracked length", tasksTracked.length);
+        // If no data, report it and exit
+        if (tasksTracked.length == 0) {
+            dataElement.innerHTML = "<b>No data found</b>";
+            bluetoothCommunicationEnded();
+            return;
+        }
+        // Otherwise parse the data and output it as a table
+        let logNode = document.createElement('dl');
+        for (let i = 0; i < (tasksTracked.length - 1); i++) {
+            let keyNode=document.createElement('dt');
+            keyNode.innerText=tasksTracked[i].task;
+            logNode.appendChild(keyNode);
+            let valNode=document.createElement('dd');
+            let start = new Date(tasksTracked[i].time * 1000);
+            valNode.innerText="start at : " + start.toLocaleString()
+            if( i +1 < tasksTracked.length){
+                valNode.innerText += ", duration :" + formatElapsedSeconds(tasksTracked[i+1].time - tasksTracked[i].time);
+            }
+            logNode.appendChild(valNode);
+        }
+        dataElement.appendChild(logNode);
+        bluetoothCommunicationEnded();
+    });
+}
+
+function enableLoadLogDataBtn(){
+    let btnLoadLogData = document.getElementById('btnLoadLogData')
+    btnLoadLogData.removeAttribute('disabled')
+    btnLoadLogData.addEventListener('click', getLogData)
+}
+
+function disableLoadLogDataBtn(){
+    let btnLoadLogData = document.getElementById('btnLoadLogData')
+    btnLoadLogData.setAttribute('disabled', 'disabled')
+    btnLoadLogData.removeEventListener('click', getLogData)
+}
+
+
+function formatElapsedSeconds(elapsedSeconds){
+    let hours   = Math.floor(elapsedSeconds / 3600);
+    let minutes = Math.floor((elapsedSeconds - (hours * 3600)) / 60);
+    let seconds = elapsedSeconds - (hours * 3600) - (minutes * 60);
+
+    if (hours   < 10) {hours   = "0"+hours;}
+    if (minutes < 10) {minutes = "0"+minutes;}
+    if (seconds < 10) {seconds = "0"+seconds;}
+    return hours+':'+minutes+':'+seconds;
 }
 
 async function getConf(){
