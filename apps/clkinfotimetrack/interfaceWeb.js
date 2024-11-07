@@ -1,16 +1,23 @@
 const TimeTrackerLib=exports;
 delete exports;
 
+function bluetoothCommunicationInProgress(message){
+    // show loading window
+    Util.showModal(message);
+}
+
+function bluetoothCommunicationEnded(){
+    Util.hideModal();
+}
+
 async function getConf(){
     console.log("<ClockInfoTimeTracker>","getConf","start");
     const ConfigElement = document.getElementById("config");
-    // show loading window
-    Util.showModal("Loading config...");
+    bluetoothCommunicationInProgress("Loading config...");
     ConfigElement.innerHTML = "";
     return Util.readStorageJSON(TimeTrackerLib.confFile(), config => {
         console.log("<ClockInfoTimeTracker>","getConf", config);
-        // remove window
-        Util.hideModal();
+        bluetoothCommunicationEnded();
         // If no config, report it and exit
         if (config == undefined) {
             config = TimeTrackerLib.defaultConf();
@@ -106,9 +113,9 @@ function save(){
         };
     };
     console.log("<ClockInfoTimeTracker>","save","end config",config);
-    Util.showModal("Save config...");
+    bluetoothCommunicationInProgress("Save config...");
     Util.writeStorage(TimeTrackerLib.confFile(),JSON.stringify(config),args => {
-        Util.hideModal();
+        bluetoothCommunicationEnded();
         getConf();
     })
 }
