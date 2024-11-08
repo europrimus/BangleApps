@@ -5,3 +5,45 @@
 summary > h3 {
     display: inline-block;
 }
+
+#config input {
+    width: 90%;
+}
+
+#logList span{
+    margin-right: 0.5em;
+}
+
+#logList .btn{
+    margin: 0 0.2em;
+}
+
+#data dl {
+    display: grid;
+    grid-template-columns: max-content auto;
+}
+
+#data dt {
+    grid-column-start: 1;
+}
+
+#data dd {
+    grid-column-start: 2;
+    margin:0 0.5em;
+}
+
+#data dd>span{
+    margin: 0 0.5em;
+}
+
+#data .start::before{
+    margin: 0 0.1em;
+    content: "⌚";
+    color: #5755d9;
+}
+
+#data .duration::before {
+    margin: 0 0.1em;
+    content: "⌛";
+    color: #5755d9;
+}

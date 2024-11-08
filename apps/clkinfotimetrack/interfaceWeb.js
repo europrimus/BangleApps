@@ -39,14 +39,23 @@ async function viewLogData(event){
         // Otherwise parse the data and output it as a table
         let logNode = document.createElement('dl');
         for (let i = 0; i < (tasksTracked.length); i++) {
+            // task name
             let keyNode=document.createElement('dt');
             keyNode.innerText=tasksTracked[i].task;
             logNode.appendChild(keyNode);
             let valNode=document.createElement('dd');
+            //  start
             let start = new Date(tasksTracked[i].time * 1000);
-            valNode.innerText="start at : " + start.toLocaleString()
+            let startElement=document.createElement('span');
+            startElement.classList.add("start");
+            startElement.innerText=start.toLocaleString()
+            valNode.append(startElement);
+            // duration
             if( i +1 < tasksTracked.length){
-                valNode.innerText += ", duration :" + formatElapsedSeconds(tasksTracked[i+1].time - tasksTracked[i].time);
+                let durationElement=document.createElement('span');
+                durationElement.classList.add("duration");
+                durationElement.innerText=formatElapsedSeconds(tasksTracked[i+1].time - tasksTracked[i].time);
+                valNode.append(durationElement);
             }
             logNode.appendChild(valNode);
         }
