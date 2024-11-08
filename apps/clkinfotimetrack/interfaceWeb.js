@@ -2,27 +2,34 @@ const TimeTrackerLib=exports;
 delete exports;
 
 function bluetoothCommunicationInProgress(message){
-    disableLoadLogDataBtn();
+    let listOfBtn = document.getElementsByClassName('bleCom')
+    for (let btn of listOfBtn) {
+        btn.setAttribute('disabled', 'disabled')
+    }
     // show loading window
     Util.showModal(message);
 }
 
 function bluetoothCommunicationEnded(){
     Util.hideModal();
-    enableLoadLogDataBtn();
+    let listOfBtn = document.getElementsByClassName('bleCom')
+    for (let btn of listOfBtn) {
+        btn.removeAttribute('disabled')
+    }
 }
 
-async function getLogData() {
-    console.log("<ClockInfoTimeTracker>","getLogData","start");
+async function viewLogData(event){
+    console.log("<ClockInfoTimeTracker>","viewLogData","start");
+    const fileName = event.target.name;
     const dataElement = document.getElementById("data");
     bluetoothCommunicationInProgress("Loading data...");
     // get the data
     dataElement.innerHTML = "";
-    return Util.readStorage( TimeTrackerLib.logFile(), data => {
-        console.log("<ClockInfoTimeTracker>","getLogData","data length", data.length);
+    return Util.readStorage( fileName, data => {
+        console.log("<ClockInfoTimeTracker>","viewLogData","data length", data.length);
         // remove window
         tasksTracked = TimeTrackerLib.csvJSON(data);
-        console.log("<ClockInfoTimeTracker>","getLogData","tasksTracked length", tasksTracked.length);
+        console.log("<ClockInfoTimeTracker>","viewLogData","tasksTracked length", tasksTracked.length);
         // If no data, report it and exit
         if (tasksTracked.length == 0) {
             dataElement.innerHTML = "<b>No data found</b>";
@@ -48,18 +55,53 @@ async function getLogData() {
     });
 }
 
-function enableLoadLogDataBtn(){
-    let btnLoadLogData = document.getElementById('btnLoadLogData')
-    btnLoadLogData.removeAttribute('disabled')
-    btnLoadLogData.addEventListener('click', getLogData)
+async function saveLogData(event){
+    console.log("<ClockInfoTimeTracker>","saveLogData","start");
+    const fileName = event.target.name;
+    console.log("save " + fileName);
+    // TODO: implement save csv
 }
 
-function disableLoadLogDataBtn(){
-    let btnLoadLogData = document.getElementById('btnLoadLogData')
-    btnLoadLogData.setAttribute('disabled', 'disabled')
-    btnLoadLogData.removeEventListener('click', getLogData)
+function listAllLogFiles(){
+    Puck.eval(
+        'require("Storage").list(/^clkinfotimetrack.*\.csv/)',
+        displayListOfLogFiles
+    )
 }
 
+function displayListOfLogFiles(filesList){
+    let logListElement = document.getElementById('logList')
+    logListElement.innerHTML = "";
+    let ulElement = document.createElement('ul');
+    filesList.forEach((fileName)=>{
+        let liElement = document.createElement('li');
+        liElement.classList.add("no-bullet");
+        // file name
+        let spanElement = document.createElement('span');
+        spanElement.innerText=fileName;
+        liElement.append(spanElement);
+        // view log button
+        let inputElement = document.createElement('input');
+        inputElement.classList.add("btn");
+        inputElement.classList.add("bleCom");
+        inputElement.type = "button";
+        inputElement.name = fileName;
+        inputElement.value = "view";
+        inputElement.addEventListener('click', viewLogData)
+        liElement.append(inputElement);
+        // load log button
+        inputElement = document.createElement('input');
+        inputElement.classList.add("btn");
+        inputElement.classList.add("bleCom");
+        inputElement.type = "button";
+        inputElement.name = fileName;
+        inputElement.value = "save";
+        inputElement.addEventListener('click', saveLogData)
+        liElement.append(inputElement);
+        ulElement.append(liElement);
+    })
+    logListElement.appendChild(ulElement);
+}
 
 function formatElapsedSeconds(elapsedSeconds){
     let hours   = Math.floor(elapsedSeconds / 3600);
@@ -92,7 +134,13 @@ async function getConf(){
         }
         ConfigElement.appendChild(confNode);
         console.log("<ClockInfoTimeTracker>","getConf", "end display config");
+        getConfEnd();
     });
+}
+
+function getConfEnd(){
+    console.log("<ClockInfoTimeTracker>","getConf","End")
+    listAllLogFiles();
 }
 
 function genConfNode(confNode,key,val){
@@ -187,8 +235,5 @@ function save(){
 // Called when app starts
 function onInit() {
     getConf()
-    .catch((reason) => {console.log("<ClockInfoTimeTracker>","getConf", reason)})
-    .finally(()=>{
-        console.log("<ClockInfoTimeTracker>","getConf","End")
-    })
+    .catch((reason) => {console.log("<ClockInfoTimeTracker>","getConf", reason)});
 }
