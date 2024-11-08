@@ -38,7 +38,7 @@ async function viewLogData(event){
         }
         // Otherwise parse the data and output it as a table
         let logNode = document.createElement('dl');
-        for (let i = 0; i < (tasksTracked.length - 1); i++) {
+        for (let i = 0; i < (tasksTracked.length); i++) {
             let keyNode=document.createElement('dt');
             keyNode.innerText=tasksTracked[i].task;
             logNode.appendChild(keyNode);
