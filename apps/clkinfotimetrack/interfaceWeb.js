@@ -120,7 +120,6 @@ async function getConf(){
     bluetoothCommunicationInProgress("Loading config...");
     ConfigElement.innerHTML = "";
     return Util.readStorageJSON(TimeTrackerLib.confFile(), config => {
-        console.log("<ClockInfoTimeTracker>","getConf", config);
         bluetoothCommunicationEnded();
         // If no config, report it and exit
         if (config == undefined) {
